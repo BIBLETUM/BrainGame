@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.example.braingame.R
 import com.example.braingame.databinding.FragmentChooseLevelBinding
 import com.example.braingame.domain.entity.Level
@@ -40,12 +41,10 @@ class ChooseLevelFragment : Fragment() {
     }
 
     private fun launchGameFragment(level: Level) {
-        val fragment = GameFragment.newInstance(level)
-        requireActivity().supportFragmentManager
-            .beginTransaction()
-            .replace(R.id.main_container, fragment)
-            .addToBackStack(GameFragment.NAME)
-            .commit()
+        val args = Bundle().apply {
+            putParcelable(GameFragment.KEY_LEVEL, level)
+        }
+        findNavController().navigate(R.id.action_chooseLevelFragment_to_gameFragment, args)
     }
 
     override fun onDestroyView() {

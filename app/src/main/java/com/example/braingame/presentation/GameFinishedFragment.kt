@@ -8,6 +8,7 @@ import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import androidx.navigation.fragment.findNavController
 import com.example.braingame.R
 import com.example.braingame.databinding.FragmentGameFinishedBinding
 import com.example.braingame.domain.entity.GameResult
@@ -43,14 +44,6 @@ class GameFinishedFragment : Fragment() {
         binding.buttonRetry.setOnClickListener {
             retryGame()
         }
-        requireActivity().onBackPressedDispatcher.addCallback(
-            viewLifecycleOwner,
-            object : OnBackPressedCallback(true) {
-                override fun handleOnBackPressed() {
-                    retryGame()
-                }
-            }
-        )
         setTexts()
         drawFace()
     }
@@ -96,10 +89,7 @@ class GameFinishedFragment : Fragment() {
     }
 
     private fun retryGame() {
-        requireActivity().supportFragmentManager.popBackStack(
-            GameFragment.NAME,
-            FragmentManager.POP_BACK_STACK_INCLUSIVE
-        )
+        findNavController().popBackStack()
     }
 
     private fun parseArgs() {
@@ -109,7 +99,7 @@ class GameFinishedFragment : Fragment() {
     }
 
     companion object {
-        private const val KEY_RESULT = "result"
+        const val KEY_RESULT = "result"
 
         fun newInstance(result: GameResult): GameFinishedFragment {
             return GameFinishedFragment().apply {
